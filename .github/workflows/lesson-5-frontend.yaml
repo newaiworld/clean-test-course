@@ -1,4 +1,4 @@
-sname: Lesson 5 DAST
+name: Lesson 5 DAST
 
 on:
   push:
@@ -32,7 +32,7 @@ jobs:
     needs: [deploy]
     runs-on: ubuntu-latest
     steps:
-      - name: Dynamic Application Security Scan
+      - name: OWASP ZAP Baseline Scan
         uses: zaproxy/action-baseline@v0.7.0
         with:
-          target:  'http://hangry-web-dev.us-east-1.elasticbeanstalk.com/'
+          target:  'https://hangryhippo.quantic.host'
