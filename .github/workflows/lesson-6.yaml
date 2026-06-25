@@ -45,14 +45,12 @@ jobs:
         working-directory: frontend
     steps:
       - uses: actions/checkout@v4
-      - name: Install dependencies 
-      - run: npm install 
-      - name: Start CRA sever
-      - run: npm start 
+
+      - name: Install dependencies
+        run: npm install
+
       - name: Start CRA server
-        run: |
-          CI=true BROWSER=none npm start &
-          echo "Waiting for http://localhost:3000..."
+        run: CI=true BROWSER=none npm start &
 
       - name: Wait for server to be ready
         run: npx wait-on http://localhost:3000
@@ -65,4 +63,9 @@ jobs:
         uses: actions/upload-artifact@v4.6.2
         with:
           name: cypress-videos
-          path: cypress/videos
+          path: cypress/videos        if: always()
+        with:
+          name: cypress-videos
+          path: frontend/cypress/videos
+
+       
