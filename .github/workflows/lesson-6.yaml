@@ -45,9 +45,24 @@ jobs:
         working-directory: frontend
     steps:
       - uses: actions/checkout@v4
-      - run: cypress run --config-file=cypress.config.js
-      - uses: actions/upload-artifact@v4.6.2
+      - name: Install dependencies 
+      - run: npm install 
+      - name: Start CRA sever
+      - run: npm start 
+      - name: Start CRA server
+        run: |
+          CI=true BROWSER=none npm start &
+          echo "Waiting for http://localhost:3000..."
+
+      - name: Wait for server to be ready
+        run: npx wait-on http://localhost:3000
+
+      - name: Run Cypress tests
+        run: cypress run --config-file=cypress.config.js
+
+      - name: Upload Cypress videos
         if: always()
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: cypress-videos
-          path: frontend/cypress/videos
+          path: cypress/videos
